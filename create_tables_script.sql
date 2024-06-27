@@ -45,6 +45,7 @@ WHERE table_name = 'PATIENTS';
 ----------------------------------------------------------- DOCTORS table ------------------------------
 
 -- DROP TABLE IF EXISTS DOCTORS;
+drop table DOCTORS;
 CREATE TABLE IF NOT EXISTS DOCTORS
 (
 	ID VARCHAR(36) PRIMARY KEY,
@@ -52,10 +53,10 @@ CREATE TABLE IF NOT EXISTS DOCTORS
 	LAST_NAME VARCHAR(200) NOT NULL,
 	EMAIL VARCHAR(200) NOT NULL,
 	PHONE VARCHAR(20) NOT NULL,
-	DEPARTMENT_ID VARCHAR(36),
+--	DEPARTMENT_ID VARCHAR(36),
     ROOM_ID VARCHAR(36),
     SPECIALIZATION VARCHAR(200)
---     FOREIGN KEY (DEPARTMENT_ID) REFERENCES DEPARTMENTS(ID),
+  --  FOREIGN KEY (DEPARTMENT_ID) REFERENCES DEPARTMENTS(ID)
 --     FOREIGN KEY (ROOM_ID) REFERENCES ROOMS(ID)
 );
 
@@ -81,3 +82,61 @@ FROM information_schema.columns
 WHERE table_name = 'DOCTORS';
 
 ----------------------------------------------------------- DOCTORS table ------------------------------
+
+----------------------------------------------------------- DOCTORS-DEPARTMENTS RELATIONSHIP table ------------------------------
+
+-- проміжна таблиця між лікарями та департаментами, щоб не було взаємопосилань
+CREATE TABLE IF NOT EXISTS DOCTOR_DEPARTMENT (
+    DOCTOR_ID VARCHAR(36),
+    DEPARTMENT_ID VARCHAR(36),
+    MAIN_DOCTOR BOOLEAN DEFAULT FALSE,
+    PRIMARY KEY (DOCTOR_ID, DEPARTMENT_ID),
+    FOREIGN KEY (DOCTOR_ID) REFERENCES DOCTORS(ID),
+    FOREIGN KEY (DEPARTMENT_ID) REFERENCES DEPARTMENTS(ID)
+);
+
+ALTER TABLE doctor_department
+COMMENT = "Table to CREATE RELATIONSHIP BETWEEN DEPARTMENTS AND DOCTORS";
+
+ALTER TABLE doctor_department
+MODIFY COLUMN DOCTOR_ID VARCHAR(36) COMMENT 'Unique identifier for each DOCTOR',
+MODIFY COLUMN DEPARTMENT_ID VARCHAR(36) COMMENT 'Unique identifier for each department',
+MODIFY COLUMN MAIN_DOCTOR BOOLEAN DEFAULT FALSE COMMENT 'SHOWS WHETHER THE DOCTOR IS THE MAIN DOCTOR IN THE DEPARTMENT'
+
+select * from doctor_department;
+
+-- побачити коменти
+SELECT column_name, column_comment
+FROM information_schema.columns
+WHERE table_name = 'doctor_department';
+
+----------------------------------------------------------- DOCTORS-DEPARTMENTS RELATIONSHIP table ------------------------------
+
+----------------------------------------------------------- DEPARTMENTS table ------------------------------
+
+-- DROP TABLE IF EXISTS DEPARTMENTS;
+drop table departments;
+CREATE TABLE IF NOT EXISTS DEPARTMENTS
+(
+	ID VARCHAR(36) PRIMARY KEY,
+    DEPARTMENT_TYPE VARCHAR(200)
+--    MAIN_DOCTOR_ID VARCHAR(36)
+   -- FOREIGN KEY (MAIN_DOCTOR_ID) REFERENCES DOCTORS(ID)
+);
+
+ALTER TABLE departments
+COMMENT = "Table to store departments' information";
+
+ALTER TABLE departments
+MODIFY COLUMN ID VARCHAR(36) COMMENT 'Unique identifier for each departments',
+MODIFY COLUMN  DEPARTMENT_TYPE VARCHAR(200) COMMENT 'TYPE OF EACH DEPARTMENT'
+
+
+select * from departments;
+
+-- побачити коменти
+SELECT column_name, column_comment
+FROM information_schema.columns
+WHERE table_name = 'departments';
+
+----------------------------------------------------------- DEPARTMENTS table ------------------------------
