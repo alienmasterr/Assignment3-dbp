@@ -2,7 +2,6 @@ CREATE DATABASE hospital_DB;
 
 USE hospital_DB;
 
------------------------------------------------------------ PATIENTS table ------------------------------
 
 -- DROP TABLE IF EXISTS patients;
 CREATE TABLE IF NOT EXISTS PATIENTS
@@ -15,8 +14,8 @@ CREATE TABLE IF NOT EXISTS PATIENTS
 	ELECTRONIC_CABINET_ID VARCHAR(36),
     INSURANCE_NUMBER VARCHAR(36),
     WARD_ID INT
---     FOREIGN KEY (ELECTRONIC_CABINET_ID) REFERENCES ELECTRONIC_CABINET(ID),
---     FOREIGN KEY (WARD_ID) REFERENCES WARD(ID)
+--     FOREIGN KEY (ELECTRONIC_CABINET_ID) REFERENCES ELECTRONIC_CABINETS(ID),
+--     FOREIGN KEY (WARD_ID) REFERENCES WARDS(ID)
 );
 
 ALTER TABLE PATIENTS
@@ -40,8 +39,6 @@ SELECT column_name, column_comment
 FROM information_schema.columns
 WHERE table_name = 'PATIENTS';
 
------------------------------------------------------------ PATIENTS table ------------------------------
-
 ----------------------------------------------------------- DOCTORS table ------------------------------
 
 -- DROP TABLE IF EXISTS DOCTORS;
@@ -53,11 +50,9 @@ CREATE TABLE IF NOT EXISTS DOCTORS
 	LAST_NAME VARCHAR(200) NOT NULL,
 	EMAIL VARCHAR(200) NOT NULL,
 	PHONE VARCHAR(20) NOT NULL,
---	DEPARTMENT_ID VARCHAR(36),
     ROOM_ID VARCHAR(36),
-    SPECIALIZATION VARCHAR(200)
-  --  FOREIGN KEY (DEPARTMENT_ID) REFERENCES DEPARTMENTS(ID)
---     FOREIGN KEY (ROOM_ID) REFERENCES ROOMS(ID)
+    SPECIALIZATION VARCHAR(200),
+    foreign key (ROOM_ID) references ROOMS(ID)
 );
 
 ALTER TABLE DOCTORS
@@ -86,6 +81,7 @@ WHERE table_name = 'DOCTORS';
 ----------------------------------------------------------- DOCTORS-DEPARTMENTS RELATIONSHIP table ------------------------------
 
 -- проміжна таблиця між лікарями та департаментами, щоб не було взаємопосилань
+drop table doctor_department ;
 CREATE TABLE IF NOT EXISTS DOCTOR_DEPARTMENT (
     DOCTOR_ID VARCHAR(36),
     DEPARTMENT_ID VARCHAR(36),
@@ -120,8 +116,7 @@ CREATE TABLE IF NOT EXISTS DEPARTMENTS
 (
 	ID VARCHAR(36) PRIMARY KEY,
     DEPARTMENT_TYPE VARCHAR(200)
---    MAIN_DOCTOR_ID VARCHAR(36)
-   -- FOREIGN KEY (MAIN_DOCTOR_ID) REFERENCES DOCTORS(ID)
+
 );
 
 ALTER TABLE departments
@@ -140,3 +135,36 @@ FROM information_schema.columns
 WHERE table_name = 'departments';
 
 ----------------------------------------------------------- DEPARTMENTS table ------------------------------
+
+----------------------------------------------------------- ROOMS table ------------------------------
+
+-- DROP TABLE IF EXISTS ROOMS;
+
+CREATE TABLE IF NOT EXISTS ROOMS
+(
+	ID VARCHAR(36) PRIMARY KEY,
+	BUILDING INT,
+	FLOOR_NUM INT,
+	NUM INT
+);
+
+-- ALTER TABLE ROOMS
+-- RENAME COLUMN FLOOR TO FLOOR_NUM;
+
+ALTER TABLE ROOMS
+COMMENT = "Table to store ROOMS' information";
+
+ALTER TABLE ROOMS
+MODIFY COLUMN ID VARCHAR(36) COMMENT 'Unique identifier for each ROOM',
+MODIFY COLUMN  BUILDING INT COMMENT 'NUMBER OF A BUILDING',
+MODIFY COLUMN  FLOOR_NUM INT COMMENT 'NUMBER OF A FLOOR',
+MODIFY COLUMN  NUM INT COMMENT 'NUMBER OF A ROOM'
+
+select * from ROOMS;
+
+-- побачити коменти
+SELECT column_name, column_comment
+FROM information_schema.columns
+WHERE table_name = 'ROOMS';
+
+----------------------------------------------------------- ROOMS table ------------------------------
