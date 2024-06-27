@@ -2,6 +2,7 @@ CREATE DATABASE hospital_DB;
 
 USE hospital_DB;
 
+----------------------------------------------------------- PATIENTS table ------------------------------
 
 -- DROP TABLE IF EXISTS patients;
 CREATE TABLE IF NOT EXISTS PATIENTS
@@ -38,3 +39,45 @@ select * from patients;
 SELECT column_name, column_comment
 FROM information_schema.columns
 WHERE table_name = 'PATIENTS';
+
+----------------------------------------------------------- PATIENTS table ------------------------------
+
+----------------------------------------------------------- DOCTORS table ------------------------------
+
+-- DROP TABLE IF EXISTS DOCTORS;
+CREATE TABLE IF NOT EXISTS DOCTORS
+(
+	ID VARCHAR(36) PRIMARY KEY,
+	FIRST_NAME VARCHAR(200) NOT NULL,
+	LAST_NAME VARCHAR(200) NOT NULL,
+	EMAIL VARCHAR(200) NOT NULL,
+	PHONE VARCHAR(20) NOT NULL,
+	DEPARTMENT_ID VARCHAR(36),
+    ROOM_ID VARCHAR(36),
+    SPECIALIZATION VARCHAR(200)
+--     FOREIGN KEY (DEPARTMENT_ID) REFERENCES DEPARTMENTS(ID),
+--     FOREIGN KEY (ROOM_ID) REFERENCES ROOMS(ID)
+);
+
+ALTER TABLE DOCTORS
+COMMENT = "Table to store DOCTORS' information";
+
+ALTER TABLE DOCTORS
+MODIFY COLUMN ID VARCHAR(36) COMMENT 'Unique identifier for each DOCTOR',
+MODIFY COLUMN FIRST_NAME VARCHAR(200) NOT NULL COMMENT 'First name of the DOCTORS',
+MODIFY COLUMN LAST_NAME VARCHAR(200) NOT NULL COMMENT 'Last name of the DOCTORS',
+MODIFY COLUMN EMAIL VARCHAR(200) NOT NULL COMMENT 'Email address of the DOCTORS',
+MODIFY COLUMN PHONE VARCHAR(20) NOT NULL COMMENT 'Phone number of the DOCTORS',
+MODIFY COLUMN DEPARTMENT_ID VARCHAR(36) COMMENT 'DOCTOR DEPARTMENT ID',
+MODIFY COLUMN ROOM_ID VARCHAR(36) COMMENT 'DOCTOR ROOM ID',
+MODIFY COLUMN SPECIALIZATION VARCHAR(200) COMMENT 'DOCTOR SPECIALIZATION'
+
+
+select * from DOCTORS;
+
+-- побачити коменти
+SELECT column_name, column_comment
+FROM information_schema.columns
+WHERE table_name = 'DOCTORS';
+
+----------------------------------------------------------- DOCTORS table ------------------------------
