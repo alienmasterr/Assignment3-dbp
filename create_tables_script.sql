@@ -3,7 +3,7 @@ CREATE DATABASE hospital_DB;
 USE hospital_DB;
 
 
--- DROP TABLE IF EXISTS patients;
+ DROP TABLE IF EXISTS patients;
 CREATE TABLE IF NOT EXISTS PATIENTS
 (
 	ID VARCHAR(36) PRIMARY KEY,
@@ -11,12 +11,18 @@ CREATE TABLE IF NOT EXISTS PATIENTS
 	LAST_NAME VARCHAR(200) NOT NULL,
 	EMAIL VARCHAR(200) NOT NULL,
 	PHONE VARCHAR(20) NOT NULL,
-	ELECTRONIC_CABINET_ID VARCHAR(36),
     INSURANCE_NUMBER VARCHAR(36),
-    WARD_ID INT
---     FOREIGN KEY (ELECTRONIC_CABINET_ID) REFERENCES ELECTRONIC_CABINETS(ID),
---     FOREIGN KEY (WARD_ID) REFERENCES WARDS(ID)
+    WARD_ID varchar(36),
+    FOREIGN KEY (WARD_ID) REFERENCES WARDS(ID)
 );
+
+-- ALTER TABLE PATIENTS
+-- DROP COLUMN ELECTRONIC_CABINET_ID;
+
+-- ALTER TABLE PATIENTS
+-- ADD CONSTRAINT FK_WARD_ID
+-- FOREIGN KEY (WARD_ID) REFERENCES WARDS(ID);
+
 
 ALTER TABLE PATIENTS
 COMMENT = "Table to store PATIENTS' information";
@@ -27,9 +33,8 @@ MODIFY COLUMN FIRST_NAME VARCHAR(200) NOT NULL COMMENT 'First name of the PATIEN
 MODIFY COLUMN LAST_NAME VARCHAR(200) NOT NULL COMMENT 'Last name of the PATIENT',
 MODIFY COLUMN EMAIL VARCHAR(200) NOT NULL COMMENT 'Email address of the PATIENT',
 MODIFY COLUMN PHONE VARCHAR(20) NOT NULL COMMENT 'Phone number of the PATIENT',
-MODIFY COLUMN ELECTRONIC_CABINET_ID VARCHAR(36) COMMENT 'THE NUMBER OF ELECTRONIC CABINET OF A PATIENT',
 MODIFY COLUMN INSURANCE_NUMBER VARCHAR(36) COMMENT 'INSURANCE NUMBER OF A PATIENT',
-MODIFY COLUMN WARD_ID INT COMMENT 'WARD OF THE PATIENT'
+MODIFY COLUMN WARD_ID varchar(36) COMMENT 'WARD OF THE PATIENT'
 
 
 select * from patients;
@@ -168,3 +173,211 @@ FROM information_schema.columns
 WHERE table_name = 'ROOMS';
 
 ----------------------------------------------------------- ROOMS table ------------------------------
+
+----------------------------------------------------------- APPOINTMENTS table ------------------------------
+
+ DROP TABLE IF EXISTS APPOINTMENTS;
+
+CREATE TABLE IF NOT EXISTS APPOINTMENTS
+(
+	ID VARCHAR(36) PRIMARY KEY,
+	APPOINTMENT_START_TIME DATETIME,
+	APPOINTMENT_END_TIME DATETIME,
+	ROOM_ID VARCHAR(36),
+	DOCTOR_ID VARCHAR(36),
+	PATIENT_ID VARCHAR(36),
+	foreign key (ROOM_ID) references ROOMS(ID),
+	foreign key (DOCTOR_ID) references DOCTORS(ID),
+	foreign key (PATIENT_ID) references PATIENTS(ID)
+);
+
+select * from appointments;
+
+ALTER TABLE APPOINTMENTS
+COMMENT = "Table to store APPOINTMENTS' information";
+
+-- FK - FOREIGN KEY
+ALTER TABLE APPOINTMENTS
+MODIFY COLUMN ID VARCHAR(36) COMMENT 'Unique identifier for each APPOINTMENT',
+MODIFY COLUMN APPOINTMENT_START_TIME DATETIME COMMENT 'START TIME for each APPOINTMENT',
+MODIFY COLUMN APPOINTMENT_END_TIME DATETIME COMMENT 'END TIME for each APPOINTMENT',
+MODIFY COLUMN ROOM_ID VARCHAR(36) COMMENT 'Unique identifier for each ROOM FK',
+MODIFY COLUMN DOCTOR_ID VARCHAR(36) COMMENT 'Unique identifier for each DOCTOR FK',
+MODIFY COLUMN PATIENT_ID VARCHAR(36) COMMENT 'Unique identifier for each PATIENT FK'
+
+-- побачити коменти
+SELECT column_name, column_comment
+FROM information_schema.columns
+WHERE table_name = 'APPOINTMENTS';
+
+----------------------------------------------------------- APPOINTMENTS table ------------------------------
+
+----------------------------------------------------------- DEATHS table ------------------------------
+
+-- DROP TABLE IF EXISTS DEATHS;
+
+CREATE TABLE IF NOT EXISTS DEATHS
+(
+	ID VARCHAR(36) PRIMARY KEY,
+	NAME VARCHAR(200),
+	SURNAME VARCHAR(200),
+	TIME_OF_DEATH DATETIME,
+	FAMILY_PHONE_NUMBER VARCHAR(36),
+	CAUSE_OF_DEATH VARCHAR(200),
+	DOCTOR_ID VARCHAR(36),
+	foreign key (DOCTOR_ID) references DOCTORS(ID)
+);
+
+select * from DEATHS;
+
+ALTER TABLE DEATHS
+COMMENT = "Table to store APPOINTMENTS' information";
+
+-- FK - FOREIGN KEY
+ALTER TABLE DEATHS
+MODIFY COLUMN ID VARCHAR(36) COMMENT 'Unique identifier for each DEATH',
+MODIFY COLUMN TIME_OF_DEATH DATETIME COMMENT 'START TIME for each DEATH',
+MODIFY COLUMN NAME VARCHAR(200) COMMENT 'THE NAME OF EACH DEAD',
+MODIFY COLUMN SURNAME VARCHAR(200) COMMENT 'THE SURNAME OF EACH DEAD',
+MODIFY COLUMN DOCTOR_ID VARCHAR(36) COMMENT 'Unique identifier for each DOCTOR FK',
+MODIFY COLUMN FAMILY_PHONE_NUMBER VARCHAR(36) COMMENT 'EACH FAMILY PHONE NUMBER',
+MODIFY COLUMN CAUSE_OF_DEATH VARCHAR(200) COMMENT 'CAUSE OF DEATH'
+
+
+-- побачити коменти
+SELECT column_name, column_comment
+FROM information_schema.columns
+WHERE table_name = 'DEATHS';
+
+----------------------------------------------------------- DEATHS table ------------------------------
+
+----------------------------------------------------------- EQUIPMENT table ------------------------------
+
+-- DROP TABLE IF EXISTS EQUIPMENT;
+
+CREATE TABLE IF NOT EXISTS EQUIPMENT
+(
+	ID VARCHAR(36) PRIMARY KEY,
+	NAME VARCHAR(200),
+	EQUIPMENT_TYPE VARCHAR(200),
+	QUANTITY INT
+);
+
+select * from EQUIPMENT;
+
+ALTER TABLE EQUIPMENT
+COMMENT = "Table to store EQUIPMENT information";
+
+ALTER TABLE EQUIPMENT
+MODIFY COLUMN ID VARCHAR(36) COMMENT 'Unique identifier for EQUIPMENT',
+MODIFY COLUMN NAME VARCHAR(200) COMMENT 'THE NAME OF EACH EQUIPMENT',
+MODIFY COLUMN EQUIPMENT_TYPE VARCHAR(200) COMMENT 'THE TYPE OF EACH EQUIPMENT',
+MODIFY COLUMN QUANTITY INT COMMENT 'QUANTITY OF EQUIPMENT'
+
+
+-- побачити коменти
+SELECT column_name, column_comment
+FROM information_schema.columns
+WHERE table_name = 'EQUIPMENT';
+
+----------------------------------------------------------- EQUIPMENT table ------------------------------
+
+----------------------------------------------------------- WARDS table ------------------------------
+
+-- DROP TABLE IF EXISTS WARDS;
+
+CREATE TABLE IF NOT EXISTS WARDS
+(
+	ID VARCHAR(36) PRIMARY KEY,
+	BUILDING INT,
+	FLOOR_NUM INT,
+	NUM INT
+);
+
+select * from WARDS;
+
+ALTER TABLE WARDS
+COMMENT = "Table to store WARDS information";
+
+ALTER TABLE WARDS
+MODIFY COLUMN ID VARCHAR(36) COMMENT 'Unique identifier for WARDS',
+MODIFY COLUMN  BUILDING INT COMMENT 'NUMBER OF A BUILDING',
+MODIFY COLUMN  FLOOR_NUM INT COMMENT 'NUMBER OF A FLOOR',
+MODIFY COLUMN  NUM INT COMMENT 'NUMBER OF A ROOM'
+
+-- побачити коменти
+SELECT column_name, column_comment
+FROM information_schema.columns
+WHERE table_name = 'WARDS';
+
+----------------------------------------------------------- WARDS table ------------------------------
+
+----------------------------------------------------------- DIAGNOSES table ------------------------------
+
+-- DROP TABLE IF EXISTS DIAGNOSES;
+
+CREATE TABLE IF NOT EXISTS DIAGNOSES
+(
+	PATIENT_ID VARCHAR(36) PRIMARY KEY,
+	DIAGNOSES_NAME VARCHAR(200),
+	START_DATE DATE,
+	END_DATE DATE,
+	MEDICINE_ID VARCHAR(200),
+	foreign key (PATIENT_ID) references PATIENTS(ID),
+	foreign key (MEDICINE_ID) references MEDICINE(ID)
+);
+
+select * from DIAGNOSES;
+
+ALTER TABLE DIAGNOSES
+COMMENT = "Table to store DIAGNOSES information";
+
+-- ALTER TABLE DIAGNOSES
+-- RENAME COLUMN MEDICINE TO MEDICINE_ID;
+
+ALTER TABLE DIAGNOSES
+MODIFY COLUMN PATIENT_ID VARCHAR(36) COMMENT 'Unique identifier for PATIENTS',
+MODIFY COLUMN DIAGNOSES_NAME VARCHAR(200) COMMENT 'DIAGNOSES NAME',
+MODIFY COLUMN START_DATE DATE COMMENT 'START DATE OF ILLNESS',
+MODIFY COLUMN END_DATE DATE COMMENT 'END DATE OF ILLNESS',
+MODIFY COLUMN MEDICINE_ID VARCHAR(200) COMMENT 'MEDICINE TAKEN FROM ILLNESS'
+
+-- побачити коменти
+SELECT column_name, column_comment
+FROM information_schema.columns
+WHERE table_name = 'DIAGNOSES';
+
+----------------------------------------------------------- DIAGNOSES table ------------------------------
+
+----------------------------------------------------------- MEDICINE table ------------------------------
+
+CREATE TABLE IF NOT EXISTS MEDICINE
+(
+	ID VARCHAR(36) PRIMARY KEY,
+	NAME VARCHAR(200),
+	MEDICINE_TYPE VARCHAR(200),
+	BATCH_NUMBER INT,
+	EXPIRATION_DATE DATE,
+	QUANTITY INT
+);
+
+select * from MEDICINE;
+
+ALTER TABLE MEDICINE
+COMMENT = "Table to store MEDICINE information";
+
+ALTER TABLE MEDICINE
+MODIFY COLUMN ID VARCHAR(36) COMMENT 'Unique identifier for MEDICINE',
+MODIFY COLUMN NAME VARCHAR(200) COMMENT 'MEDICINE NAME',
+MODIFY COLUMN MEDICINE_TYPE VARCHAR(200) COMMENT 'TYPE OF MEDICINE',
+MODIFY COLUMN BATCH_NUMBER INT COMMENT 'BATCH NUMBER OF MEDICINE',
+MODIFY COLUMN EXPIRATION_DATE DATE COMMENT 'EXPIRATION DATE OF THE MEDICINE',
+MODIFY COLUMN QUANTITY INT COMMENT 'QUANTITY OF MEDICINE'
+
+-- побачити коменти
+SELECT column_name, column_comment
+FROM information_schema.columns
+WHERE table_name = 'MEDICINE';
+
+----------------------------------------------------------- MEDICINE table ------------------------------
+
