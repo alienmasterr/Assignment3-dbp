@@ -3,7 +3,6 @@ import uuid
 from faker import Faker
 from dotenv import load_dotenv
 import random
-from datetime import datetime, timedelta
 import os
 
 # Load environment variables
@@ -85,6 +84,25 @@ cursor.executemany(medicine_insert_query, medicine_data)
 connection.commit()
 print("Inserted into medicine.")
 #-------------------------------------------------- Insert 10000 rows into medicine
+
+#-------------------------------------------------- Insert 500 000 rows into patients
+print("Inserting into patients...")
+
+uuids = [ward[0] for ward in wards_data]
+MAX_PHONE_LENGTH = 20
+
+patients_insert_query = """
+        INSERT INTO patients (id, first_name, last_name, email, phone, INSURANCE_NUMBER, WARD_ID) 
+        VALUES (%s, %s, %s, %s, %s, %s, %s)
+    """
+patients_data = [
+    (str(uuid.uuid4()), fake.name(), fake.last_name(), fake.email(), fake.phone_number()[:MAX_PHONE_LENGTH], str(uuid.uuid4()), random.choice(uuids))
+    for _ in range(5000)
+]
+cursor.executemany(patients_insert_query, patients_data)
+connection.commit()
+print("Inserted into patients.")
+#-------------------------------------------------- Insert 500 000 rows into patients
 
 cursor.close()
 connection.close()
