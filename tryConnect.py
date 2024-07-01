@@ -1,5 +1,6 @@
 import mysql.connector
 import uuid
+
 from faker import Faker
 from dotenv import load_dotenv
 import random
@@ -119,6 +120,38 @@ cursor.executemany(DEPARTMENTS_insert_query, DEPARTMENTS_data)
 connection.commit()
 print("Inserted into DEPARTMENTS.")
 #-------------------------------------------------- Insert 50 rows into DEPARTMENTS
+
+#-------------------------------------------------- Insert 500000 rows into DOCTORS
+
+print("Inserting into DOCTORS...")
+
+uuidsRooms = [room[0] for room in rooms_data]
+MAX_PHONE_LENGTH = 20
+
+length = len(rooms_data)
+number_of_doctors = 5000
+
+def chooseId():
+    global length
+    if length > 0:
+        room_id = uuidsRooms[length - 1]
+        length -= 1
+    else:
+        room_id = None
+    return room_id
+
+DOCTORS_insert_query = """
+        INSERT INTO DOCTORS (id, first_name, last_name, email, phone, ROOM_ID, SPECIALIZATION) 
+        VALUES (%s, %s, %s, %s, %s, %s, %s)
+    """
+DOCTORS_data = [
+    (str(uuid.uuid4()), fake.name(), fake.last_name(), fake.email(), fake.phone_number()[:MAX_PHONE_LENGTH], chooseId(), fake.word())
+    for _ in range(number_of_doctors)
+]
+cursor.executemany(DOCTORS_insert_query, DOCTORS_data)
+connection.commit()
+print("Inserted into DOCTORS.")
+#-------------------------------------------------- Insert 500000 rows into DOCTORS
 
 cursor.close()
 connection.close()
