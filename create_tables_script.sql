@@ -81,9 +81,10 @@ SELECT column_name, column_comment
 FROM information_schema.columns
 WHERE table_name = 'DOCTORS';
 
------------------------------------------------------------ DOCTORS table ------------------------------
+----------------------------------------------------------- DOCTORS table end------------------------------
 
------------------------------------------------------------ DOCTORS-DEPARTMENTS RELATIONSHIP table ------------------------------
+----------------------------------------------------------- DOCTORS-DEPARTMENTS RELATIONSHIP table start------------------------------
+-- заповнено
 
 -- проміжна таблиця між лікарями та департаментами, щоб не було взаємопосилань
 drop table doctor_department ;
@@ -111,9 +112,9 @@ SELECT column_name, column_comment
 FROM information_schema.columns
 WHERE table_name = 'doctor_department';
 
------------------------------------------------------------ DOCTORS-DEPARTMENTS RELATIONSHIP table ------------------------------
+----------------------------------------------------------- DOCTORS-DEPARTMENTS RELATIONSHIP table end------------------------------
 
------------------------------------------------------------ DEPARTMENTS table ------------------------------
+----------------------------------------------------------- DEPARTMENTS table start------------------------------
 -- заповнено
 -- DROP TABLE IF EXISTS DEPARTMENTS;
 drop table departments;
@@ -139,9 +140,9 @@ SELECT column_name, column_comment
 FROM information_schema.columns
 WHERE table_name = 'departments';
 
------------------------------------------------------------ DEPARTMENTS table ------------------------------
+----------------------------------------------------------- DEPARTMENTS table end------------------------------
 
------------------------------------------------------------ ROOMS table ------------------------------
+----------------------------------------------------------- ROOMS table start------------------------------
 -- заповнено
 
 -- DROP TABLE IF EXISTS ROOMS;
@@ -173,9 +174,9 @@ SELECT column_name, column_comment
 FROM information_schema.columns
 WHERE table_name = 'ROOMS';
 
------------------------------------------------------------ ROOMS table ------------------------------
+----------------------------------------------------------- ROOMS table end------------------------------
 
------------------------------------------------------------ APPOINTMENTS table ------------------------------
+----------------------------------------------------------- APPOINTMENTS table start------------------------------
 
  DROP TABLE IF EXISTS APPOINTMENTS;
 
