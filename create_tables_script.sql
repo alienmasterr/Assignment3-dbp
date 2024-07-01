@@ -45,7 +45,7 @@ FROM information_schema.columns
 WHERE table_name = 'PATIENTS';
 
 ----------------------------------------------------------- DOCTORS table ------------------------------
-
+-- заповнено
 -- DROP TABLE IF EXISTS DOCTORS;
 drop table DOCTORS;
 CREATE TABLE IF NOT EXISTS DOCTORS

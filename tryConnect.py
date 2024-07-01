@@ -109,7 +109,7 @@ print("Inserted into patients.")
 
 print("Inserting into DEPARTMENTS...")
 DEPARTMENTS_insert_query = """
-        INSERT INTO DEPARTMENTS (id, DEPARTMENT_TYPE) 
+        INSERT INTO DEPARTMENTS (ID, DEPARTMENT_TYPE) 
         VALUES (%s, %s)
     """
 DEPARTMENTS_data = [
@@ -152,6 +152,80 @@ cursor.executemany(DOCTORS_insert_query, DOCTORS_data)
 connection.commit()
 print("Inserted into DOCTORS.")
 #-------------------------------------------------- Insert 500000 rows into DOCTORS
+
+#-------------------------------------------------- Insert 500000 rows into DOCTOR_DEPARTMENT
+# CREATE TABLE IF NOT EXISTS DOCTOR_DEPARTMENT (
+#     DOCTOR_ID VARCHAR(36),
+#     DEPARTMENT_ID VARCHAR(36),
+#     MAIN_DOCTOR BOOLEAN DEFAULT FALSE,
+#     PRIMARY KEY (DOCTOR_ID, DEPARTMENT_ID),
+#     FOREIGN KEY (DOCTOR_ID) REFERENCES DOCTORS(ID),
+#     FOREIGN KEY (DEPARTMENT_ID) REFERENCES DEPARTMENTS(ID)
+# );
+print("Inserting into DOCTOR_DEPARTMENT...")
+
+# doctor_ids = [doctor_id[0] for doctor_id in DOCTORS_data]
+# department_ids = [department_id[0] for department_id in DOCTORS_data]
+#
+# DOCTOR_DEPARTMENT_insert_query = """
+#         INSERT INTO DOCTOR_DEPARTMENT (DOCTOR_ID, DEPARTMENT_ID, MAIN_DOCTOR)
+#         VALUES (%s, %s, %s)
+#     """
+# # DOCTOR_DEPARTMENT_data = [
+# #     ()
+# #     for _ in range(5000)
+# # ]
+# DOCTOR_DEPARTMENT_data = []
+#
+# # Призначити головних лікарів для кожного департаменту
+# for department_id in department_ids:
+#     if doctor_ids:
+#         main_doctor_id = doctor_ids.pop()
+#         DOCTOR_DEPARTMENT_data.append((main_doctor_id, department_id, True))
+#
+# # Розподілити інших лікарів по департаментах
+# while doctor_ids:
+#     for department_id in department_ids:
+#         if doctor_ids:
+#             doctor_id = doctor_ids.pop()
+#             DOCTOR_DEPARTMENT_data.append((doctor_id, department_id, False))
+
+doctor_ids = [doctor_id[0] for doctor_id in DOCTORS_data]
+department_ids = [department_id[0] for department_id in DEPARTMENTS_data]
+
+# Перемішати список лікарів для випадкового розподілу
+random.shuffle(doctor_ids)
+
+DOCTOR_DEPARTMENT_insert_query = """
+        INSERT INTO DOCTOR_DEPARTMENT (DOCTOR_ID, DEPARTMENT_ID, MAIN_DOCTOR) 
+        VALUES (%s, %s, %s)
+    """
+
+DOCTOR_DEPARTMENT_data = []
+
+# Призначити головних лікарів для кожного департаменту
+for department_id in department_ids:
+    if doctor_ids:
+        main_doctor_id = doctor_ids.pop()
+        DOCTOR_DEPARTMENT_data.append((main_doctor_id, department_id, True))
+
+# Розподілити інших лікарів по департаментах
+while doctor_ids:
+    for department_id in department_ids:
+        if doctor_ids:
+            doctor_id = doctor_ids.pop()
+            DOCTOR_DEPARTMENT_data.append((doctor_id, department_id, False))
+
+valid_department_ids = set(department_ids)
+for record in DOCTOR_DEPARTMENT_data:
+    if record[1] not in valid_department_ids:
+        print(f"Invalid DEPARTMENT_ID found: {record[1]}")
+
+
+cursor.executemany(DOCTOR_DEPARTMENT_insert_query, DOCTOR_DEPARTMENT_data)
+connection.commit()
+print("Inserted into DOCTOR_DEPARTMENT.")
+#-------------------------------------------------- Insert 500000 rows into DOCTOR_DEPARTMENT
 
 cursor.close()
 connection.close()
