@@ -2,7 +2,7 @@ CREATE DATABASE hospital_DB;
 
 USE hospital_DB;
 
-
+-- заповнено
  DROP TABLE IF EXISTS patients;
 CREATE TABLE IF NOT EXISTS PATIENTS
 (
@@ -114,7 +114,7 @@ WHERE table_name = 'doctor_department';
 ----------------------------------------------------------- DOCTORS-DEPARTMENTS RELATIONSHIP table ------------------------------
 
 ----------------------------------------------------------- DEPARTMENTS table ------------------------------
-
+-- заповнено
 -- DROP TABLE IF EXISTS DEPARTMENTS;
 drop table departments;
 CREATE TABLE IF NOT EXISTS DEPARTMENTS
@@ -142,6 +142,7 @@ WHERE table_name = 'departments';
 ----------------------------------------------------------- DEPARTMENTS table ------------------------------
 
 ----------------------------------------------------------- ROOMS table ------------------------------
+-- заповнено
 
 -- DROP TABLE IF EXISTS ROOMS;
 
@@ -252,6 +253,7 @@ WHERE table_name = 'DEATHS';
 ----------------------------------------------------------- DEATHS table ------------------------------
 
 ----------------------------------------------------------- EQUIPMENT table ------------------------------
+-- заповнено
 
 -- DROP TABLE IF EXISTS EQUIPMENT;
 
@@ -283,6 +285,7 @@ WHERE table_name = 'EQUIPMENT';
 ----------------------------------------------------------- EQUIPMENT table ------------------------------
 
 ----------------------------------------------------------- WARDS table ------------------------------
+-- заповнено
 
 -- DROP TABLE IF EXISTS WARDS;
 
@@ -350,6 +353,7 @@ WHERE table_name = 'DIAGNOSES';
 ----------------------------------------------------------- DIAGNOSES table ------------------------------
 
 ----------------------------------------------------------- MEDICINE table ------------------------------
+-- заповнено
 
 CREATE TABLE IF NOT EXISTS MEDICINE
 (

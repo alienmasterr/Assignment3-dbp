@@ -104,5 +104,21 @@ connection.commit()
 print("Inserted into patients.")
 #-------------------------------------------------- Insert 500 000 rows into patients
 
+#-------------------------------------------------- Insert 50 rows into DEPARTMENTS
+
+print("Inserting into DEPARTMENTS...")
+DEPARTMENTS_insert_query = """
+        INSERT INTO DEPARTMENTS (id, DEPARTMENT_TYPE) 
+        VALUES (%s, %s)
+    """
+DEPARTMENTS_data = [
+    (str(uuid.uuid4()), fake.word())
+    for _ in range(50)
+]
+cursor.executemany(DEPARTMENTS_insert_query, DEPARTMENTS_data)
+connection.commit()
+print("Inserted into DEPARTMENTS.")
+#-------------------------------------------------- Insert 50 rows into DEPARTMENTS
+
 cursor.close()
 connection.close()
