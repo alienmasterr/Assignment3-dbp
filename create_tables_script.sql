@@ -179,7 +179,7 @@ WHERE table_name = 'ROOMS';
 ----------------------------------------------------------- APPOINTMENTS table start------------------------------
 
  DROP TABLE IF EXISTS APPOINTMENTS;
-
+-- заповнено
 CREATE TABLE IF NOT EXISTS APPOINTMENTS
 (
 	ID VARCHAR(36) PRIMARY KEY,
@@ -217,7 +217,7 @@ WHERE table_name = 'APPOINTMENTS';
 ----------------------------------------------------------- DEATHS table ------------------------------
 
 -- DROP TABLE IF EXISTS DEATHS;
-
+-- заповнено
 CREATE TABLE IF NOT EXISTS DEATHS
 (
 	ID VARCHAR(36) PRIMARY KEY,

@@ -5,6 +5,7 @@ from faker import Faker
 from dotenv import load_dotenv
 import random
 import os
+from datetime import timedelta
 
 # Load environment variables
 load_dotenv()
@@ -26,7 +27,7 @@ connection = mysql.connector.connect(
 cursor = connection.cursor()
 fake = Faker()
 
-#-------------------------------------------------- Insert 5000 rows into rooms
+# -------------------------------------------------- Insert 5000 rows into rooms
 print("Inserting into rooms...")
 rooms_insert_query = """
         INSERT INTO rooms (id, building, floor_num, num) 
@@ -39,9 +40,9 @@ rooms_data = [
 cursor.executemany(rooms_insert_query, rooms_data)
 connection.commit()
 print("Inserted into rooms.")
-#-------------------------------------------------- Insert 5000 rows into rooms
+# -------------------------------------------------- Insert 5000 rows into rooms
 
-#-------------------------------------------------- Insert 5000 rows into equipment
+# -------------------------------------------------- Insert 5000 rows into equipment
 print("Inserting into equipment...")
 equipment_insert_query = """
         INSERT INTO equipment (id, name, EQUIPMENT_TYPE, quantity) 
@@ -54,9 +55,9 @@ equipment_data = [
 cursor.executemany(equipment_insert_query, equipment_data)
 connection.commit()
 print("Inserted into equipment.")
-#-------------------------------------------------- Insert 5000 rows into equipment
+# -------------------------------------------------- Insert 5000 rows into equipment
 
-#-------------------------------------------------- Insert 5000 rows into wards
+# -------------------------------------------------- Insert 5000 rows into wards
 print("Inserting into wards...")
 wards_insert_query = """
         INSERT INTO wards (id, building, floor_num, num) 
@@ -69,24 +70,25 @@ wards_data = [
 cursor.executemany(wards_insert_query, wards_data)
 connection.commit()
 print("Inserted into wards.")
-#-------------------------------------------------- Insert 5000 rows into wards
+# -------------------------------------------------- Insert 5000 rows into wards
 
-#-------------------------------------------------- Insert 10000 rows into medicine
+# -------------------------------------------------- Insert 10000 rows into medicine
 print("Inserting into medicine...")
 medicine_insert_query = """
         INSERT INTO medicine (id, name, MEDICINE_TYPE, BATCH_NUMBER, EXPIRATION_DATE, QUANTITY) 
         VALUES (%s, %s, %s, %s, %s, %s)
     """
 medicine_data = [
-    (str(uuid.uuid4()), fake.word(), fake.word(), random.randint(100000, 999999), fake.date(), random.randint(100, 1000))
+    (
+    str(uuid.uuid4()), fake.word(), fake.word(), random.randint(100000, 999999), fake.date(), random.randint(100, 1000))
     for _ in range(10000)
 ]
 cursor.executemany(medicine_insert_query, medicine_data)
 connection.commit()
 print("Inserted into medicine.")
-#-------------------------------------------------- Insert 10000 rows into medicine
+# -------------------------------------------------- Insert 10000 rows into medicine
 
-#-------------------------------------------------- Insert 500 000 rows into patients
+# -------------------------------------------------- Insert 500 000 rows into patients
 print("Inserting into patients...")
 
 uuids = [ward[0] for ward in wards_data]
@@ -97,15 +99,16 @@ patients_insert_query = """
         VALUES (%s, %s, %s, %s, %s, %s, %s)
     """
 patients_data = [
-    (str(uuid.uuid4()), fake.name(), fake.last_name(), fake.email(), fake.phone_number()[:MAX_PHONE_LENGTH], str(uuid.uuid4()), random.choice(uuids))
+    (str(uuid.uuid4()), fake.name(), fake.last_name(), fake.email(), fake.phone_number()[:MAX_PHONE_LENGTH],
+     str(uuid.uuid4()), random.choice(uuids))
     for _ in range(5000)
 ]
 cursor.executemany(patients_insert_query, patients_data)
 connection.commit()
 print("Inserted into patients.")
-#-------------------------------------------------- Insert 500 000 rows into patients
+# -------------------------------------------------- Insert 500 000 rows into patients
 
-#-------------------------------------------------- Insert 50 rows into DEPARTMENTS
+# -------------------------------------------------- Insert 50 rows into DEPARTMENTS
 
 print("Inserting into DEPARTMENTS...")
 DEPARTMENTS_insert_query = """
@@ -119,9 +122,9 @@ DEPARTMENTS_data = [
 cursor.executemany(DEPARTMENTS_insert_query, DEPARTMENTS_data)
 connection.commit()
 print("Inserted into DEPARTMENTS.")
-#-------------------------------------------------- Insert 50 rows into DEPARTMENTS
+# -------------------------------------------------- Insert 50 rows into DEPARTMENTS
 
-#-------------------------------------------------- Insert 500000 rows into DOCTORS
+# -------------------------------------------------- Insert 500000 rows into DOCTORS
 
 print("Inserting into DOCTORS...")
 
@@ -130,6 +133,7 @@ MAX_PHONE_LENGTH = 20
 
 length = len(rooms_data)
 number_of_doctors = 5000
+
 
 def chooseId():
     global length
@@ -140,20 +144,22 @@ def chooseId():
         room_id = None
     return room_id
 
+
 DOCTORS_insert_query = """
         INSERT INTO DOCTORS (id, first_name, last_name, email, phone, ROOM_ID, SPECIALIZATION) 
         VALUES (%s, %s, %s, %s, %s, %s, %s)
     """
 DOCTORS_data = [
-    (str(uuid.uuid4()), fake.name(), fake.last_name(), fake.email(), fake.phone_number()[:MAX_PHONE_LENGTH], chooseId(), fake.word())
+    (str(uuid.uuid4()), fake.name(), fake.last_name(), fake.email(), fake.phone_number()[:MAX_PHONE_LENGTH], chooseId(),
+     fake.word())
     for _ in range(number_of_doctors)
 ]
 cursor.executemany(DOCTORS_insert_query, DOCTORS_data)
 connection.commit()
 print("Inserted into DOCTORS.")
-#-------------------------------------------------- Insert 500000 rows into DOCTORS
+# -------------------------------------------------- Insert 500000 rows into DOCTORS
 
-#-------------------------------------------------- Insert 500000 rows into DOCTOR_DEPARTMENT
+# -------------------------------------------------- Insert 500000 rows into DOCTOR_DEPARTMENT
 
 print("Inserting into DOCTOR_DEPARTMENT...")
 
@@ -187,13 +193,12 @@ for record in DOCTOR_DEPARTMENT_data:
     if record[1] not in valid_department_ids:
         print(f"Invalid DEPARTMENT_ID found: {record[1]}")
 
-
 cursor.executemany(DOCTOR_DEPARTMENT_insert_query, DOCTOR_DEPARTMENT_data)
 connection.commit()
 print("Inserted into DOCTOR_DEPARTMENT.")
-#-------------------------------------------------- Insert 500000 rows into DOCTOR_DEPARTMENT
+# -------------------------------------------------- Insert 500000 rows into DOCTOR_DEPARTMENT
 
-#-------------------------------------------------- Insert 500 rows into DEATHS
+# -------------------------------------------------- Insert 500 rows into DEATHS
 print("Inserting into DEATHS...")
 doctor_ids = [doctor_id[0] for doctor_id in DOCTORS_data]
 
@@ -204,13 +209,35 @@ DEATHS_insert_query = """
         VALUES (%s, %s, %s, %s, %s, %s, %s)
     """
 DEATHS_data = [
-    (str(uuid.uuid4()), fake.name(), fake.last_name(), fake.date_time(), fake.phone_number()[:MAX_PHONE_LENGTH], fake.word(), random.choice(doctor_ids))
+    (str(uuid.uuid4()), fake.name(), fake.last_name(), fake.date_time(), fake.phone_number()[:MAX_PHONE_LENGTH],
+     fake.word(), random.choice(doctor_ids))
     for _ in range(500)
 ]
 cursor.executemany(DEATHS_insert_query, DEATHS_data)
 connection.commit()
 print("Inserted into DEATHS.")
-#-------------------------------------------------- Insert 500 rows into DEATHS
+# -------------------------------------------------- Insert 500 rows into DEATHS
+
+# -------------------------------------------------- Insert 10000 rows into APPOINTMENTS
+print("Inserting into APPOINTMENTS...")
+doctor_ids = [doctor_id[0] for doctor_id in DOCTORS_data]
+uuidsRooms = [room[0] for room in rooms_data]
+patient_ids = [patient_id[0] for patient_id in patients_data]
+
+APPOINTMENTS_insert_query = """
+        INSERT INTO APPOINTMENTS (id, APPOINTMENT_START_TIME, APPOINTMENT_END_TIME, ROOM_ID, DOCTOR_ID, PATIENT_ID) 
+        VALUES (%s, %s, %s, %s, %s, %s)
+    """
+APPOINTMENTS_data = [
+    (str(uuid.uuid4()), start_time := fake.date_time(),
+     start_time + timedelta(minutes=30), random.choice(uuidsRooms), random.choice(doctor_ids),
+     random.choice(patient_ids))
+    for _ in range(10000)
+]
+cursor.executemany(APPOINTMENTS_insert_query, APPOINTMENTS_data)
+connection.commit()
+print("Inserted into APPOINTMENTS.")
+# -------------------------------------------------- Insert 10000 rows into APPOINTMENTS
 
 cursor.close()
 connection.close()
