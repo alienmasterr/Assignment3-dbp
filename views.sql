@@ -1,3 +1,5 @@
+USE hospital_db;
+
 ----------------------------------------------------------- VIEW  Main_DoctorsView------------------------------
 CREATE INDEX idx_main_doctor ON DOCTOR_DEPARTMENT (MAIN_DOCTOR);
 CREATE INDEX idx_doctor_id ON DOCTOR_DEPARTMENT (DOCTOR_ID);
@@ -5,14 +7,10 @@ CREATE INDEX idx_department_id ON DOCTOR_DEPARTMENT (DEPARTMENT_ID);
 
 CREATE VIEW Main_DoctorsView AS
 SELECT
-    -- dd.DOCTOR_ID,
     d.first_name AS Doctor_First_Name,
     d.last_name AS Doctor_Last_Name,
-    -- d.email AS Doctor_Email,
     d.phone AS Doctor_Phone,
     d.SPECIALIZATION AS Doctor_Specialization,
-    -- d.ROOM_ID AS Doctor_Room_ID,
-    -- dd.DEPARTMENT_ID,
     dep.DEPARTMENT_TYPE AS Department_Name
 FROM DOCTOR_DEPARTMENT dd
 JOIN DOCTORS d ON dd.DOCTOR_ID = d.id
