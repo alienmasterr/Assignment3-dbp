@@ -234,3 +234,4 @@ print("Inserted into APPOINTMENTS.")
 # Close the cursor and connection
 cursor.close()
 connection.close()
+
