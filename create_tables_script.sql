@@ -16,14 +16,6 @@ CREATE TABLE IF NOT EXISTS PATIENTS
     FOREIGN KEY (WARD_ID) REFERENCES WARDS(ID)
 );
 
--- ALTER TABLE PATIENTS
--- DROP COLUMN ELECTRONIC_CABINET_ID;
-
--- ALTER TABLE PATIENTS
--- ADD CONSTRAINT FK_WARD_ID
--- FOREIGN KEY (WARD_ID) REFERENCES WARDS(ID);
-
-
 ALTER TABLE PATIENTS
 COMMENT = "Table to store PATIENTS' information";
 
@@ -179,7 +171,7 @@ WHERE table_name = 'ROOMS';
 ----------------------------------------------------------- APPOINTMENTS table start------------------------------
 
  DROP TABLE IF EXISTS APPOINTMENTS;
-
+-- заповнено
 CREATE TABLE IF NOT EXISTS APPOINTMENTS
 (
 	ID VARCHAR(36) PRIMARY KEY,
@@ -217,7 +209,7 @@ WHERE table_name = 'APPOINTMENTS';
 ----------------------------------------------------------- DEATHS table ------------------------------
 
 -- DROP TABLE IF EXISTS DEATHS;
-
+-- заповнено
 CREATE TABLE IF NOT EXISTS DEATHS
 (
 	ID VARCHAR(36) PRIMARY KEY,
@@ -322,7 +314,8 @@ WHERE table_name = 'WARDS';
 
 CREATE TABLE IF NOT EXISTS DIAGNOSES
 (
-	PATIENT_ID VARCHAR(36) PRIMARY KEY,
+    id varchar(36) primary key,
+	PATIENT_ID VARCHAR(36),
 	DIAGNOSES_NAME VARCHAR(200),
 	START_DATE DATE,
 	END_DATE DATE,
