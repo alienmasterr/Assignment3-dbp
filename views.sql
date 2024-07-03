@@ -2,8 +2,6 @@ USE hospital_db;
 
 ----------------------------------------------------------- VIEW  Main_DoctorsView------------------------------
 CREATE INDEX idx_main_doctor ON DOCTOR_DEPARTMENT (MAIN_DOCTOR);
-CREATE INDEX idx_doctor_id ON DOCTOR_DEPARTMENT (DOCTOR_ID);
-CREATE INDEX idx_department_id ON DOCTOR_DEPARTMENT (DEPARTMENT_ID);
 
 CREATE VIEW Main_DoctorsView AS
 SELECT
